@@ -5,13 +5,10 @@
 
 from setuptools import setup, find_packages
 
-with open('README.rst') as readme_file:
+with open('README.md') as readme_file:
     readme = readme_file.read()
 
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-
-requirements = ['Click>=6.0', ]
+requirements = ['requests>=2.18.4']
 
 setup_requirements = ['pytest-runner', ]
 
@@ -40,7 +37,7 @@ setup(
     },
     install_requires=requirements,
     license="GNU General Public License v3",
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     include_package_data=True,
     keywords='crowdai_api',
     name='crowdai_api',
