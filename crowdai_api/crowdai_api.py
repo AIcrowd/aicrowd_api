@@ -55,7 +55,7 @@ class API:
         response = make_api_call(self.auth_token, "get", url)
         response_body = json.loads(response.text)
         if response.status_code == 200:
-            participant_id = response_body["participant_id"]
+            participant_id = int(response_body["participant_id"])
             message = response_body["message"]
             return (True, participant_id, message)
         else:
