@@ -155,9 +155,6 @@ texinfo_documents = [
      u'crowdAI API Documentation',
      author,
      'crowdai_api',
-     'One line description of project.',
+     'Python client for the crowdai.org webapp api',
      'Miscellaneous'),
 ]
-
-
-

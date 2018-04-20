@@ -7,3 +7,4 @@ __email__ = 'spmohanty91@gmail.com'
 __version__ = '0.1.0'
 
 from .crowdai_api import API
+from .submission import CrowdAISubmission
