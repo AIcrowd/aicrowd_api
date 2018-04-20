@@ -30,6 +30,6 @@ def make_api_call(auth_token, request_type, url, payload={}, debug=False):
                               url,
                               params=payload,
                               headers=headers,
-                              verify=False
+                              verify=True
                               )
     return r
