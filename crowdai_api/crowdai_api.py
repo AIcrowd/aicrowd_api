@@ -18,14 +18,16 @@ class API:
     """
     def __init__(self,
                  auth_token,
-                 round_id=1,
                  base_url="https://www.crowdai.org/api",
                  ):
         self.auth_token = auth_token
         self.base_url = base_url
+
+        self.participant_api_key = False
+        self.participant_id = False
         print("Working....")
 
-    def get_participant_api_key(self, username):
+    def authenticate_participant_with_username(self, username):
         """Returns the API key of a participant given a crowdai username
         :Example:
 
@@ -33,10 +35,20 @@ class API:
         >>> api_key = api.get_participant_api_key("spmohanty")
         """
         url = "{}/{}/{}".format(self.base_url, "participants", username)
-        r = make_api_call(self.auth_token, "get", url)
-        # print(r.text)
-        # print(r.url)
-        return r
+        response = make_api_call(self.auth_token, "get", url)
+        print(response.text)
+        response_body = json.loads(response.text)
+        if response.status_code == 200:
+            self.participant_id = response_body["id"]
+            self.participant_api_key = response_body["api_key"]
+        else:
+            message = response_body["message"]
+            raise Exception(message)
+            # TODO: Raise Exception
+            print("Unable to authenticate : ", message)
+
+        return self.participant_api_key
+
 
     def authenticate_participant(self, api_key):
         """Authenticate API key of a participant
@@ -57,22 +69,57 @@ class API:
         if response.status_code == 200:
             participant_id = int(response_body["participant_id"])
             message = response_body["message"]
+
+            self.participant_api_key = api_key
+            self.participant_id = participant_id
+
             return (True, participant_id, message)
         else:
             message = response_body["message"]
             return (False, False, message)
 
     def get_submission(self, submission_id):
-        return submission_id
+        url = "{}/{}/{}".format(self.base_url, "submissions", submission_id)
+        response = make_api_call(self.auth_token, "get", url)
+        print(response.text)
 
-    def create_submission(self):
-        return 1123
+    def create_submission(self, challenge_id):
+        url = "{}/{}".format(self.base_url, "external_graders")
+        _payload = {}
+        _payload["challenge_client_name"] = challenge_id
+        _payload["api_key"] = self.participant_api_key
+        _payload["grading_status"] = "submitted"
+        _payload["meta"] = {}
 
-    def update_submission(self,
-                          submission_id,
-                          status,
-                          message,
-                          meta
-                          ):
-        print(submission_id)
-        return submission_id
+        response = make_api_call(self.auth_token,
+                                 "post", url, payload=_payload)
+        response_body = json.loads(response.text)
+        if response.status_code == 202:
+            submission_id = response_body["submission_id"]
+            #submissions_remaining = response_body["submissions_remaining"]
+            message = response_body["message"]
+            return submission_id
+        else:
+            #message = response_body["message"]
+
+            # TODO raise exception
+            return False
+
+
+    def update_submission(self, submission_id):
+        url = "{}/{}/{}".format(self.base_url, "external_graders", submission_id)
+        _payload = {}
+        _payload["challenge_client_name"] = "test_challenge"
+        _payload["api_key"] = self.participant_api_key
+        _payload["grading_status"] = "graded"
+        _payload["score"] = 0.1
+        _payload["score_secondary"] = 0.12
+        _payload["meta"] = {}
+        grader_logs = ""
+        for k in range(1000):
+            grader_logs+="aksjhdkahskjdhakshd  jkashdkhashkdhashdsa\n"
+        _payload["meta"]["grader_logs"] = grader_logs
+        _payload["meta"] = json.dumps(_payload["meta"])
+        response = make_api_call(self.auth_token, "patch", url, payload=_payload)
+        print(response.status_code)
+        print(response.text)
