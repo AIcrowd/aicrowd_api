@@ -91,7 +91,7 @@ class CrowdAISubmission:
         response = make_api_call(self.auth_token,
                                  "patch", url, payload=_payload)
         response_body = json.loads(response.text)
-        if response.status_code == 200:
+        if response.status_code == 202:
             # Everything went well. Do nothing
             pass
         else:
