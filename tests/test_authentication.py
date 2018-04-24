@@ -3,7 +3,6 @@
 
 """Tests for `crowdai_api` package."""
 
-import pytest
 import os
 
 from crowdai_api import API as CROWDAI_API

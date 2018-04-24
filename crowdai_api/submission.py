@@ -110,6 +110,8 @@ class CrowdAISubmission:
         url = "{}/{}/{}".format(self.base_url, "submissions",
                                 self.id)
         response = make_api_call(self.auth_token, "get", url)
+        if response.status_code is not 200:
+            raise CrowdAIRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
         # print(json.dumps(
         #     _submission_object,
@@ -120,7 +122,7 @@ class CrowdAISubmission:
 
         self.grading_status = _submission_object["grading_status_cd"]
         self.score = _submission_object["score"]
-        self.score = _submission_object["score_secondary"]
+        self.score_secondary = _submission_object["score_secondary"]
 
     def __repr__(self):
         def _template(key, value, tabfirst=True):
