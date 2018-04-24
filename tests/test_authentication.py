@@ -11,10 +11,11 @@ try:
     AUTH_TOKEN = os.environ["AUTH_TOKEN"]
     EXAMPLE_API_KEY = os.environ["EXAMPLE_API_KEY"]
 except Exception as e:
-    raise Exception("Environment variables do not seem to be set. \
-                    Please set the following env variables : " + \
-                    ",".join(EXPECTED_KEYS)
+    raise Exception("Environment variables do not seem to be set."
+                    + "Please set the following env variables : "
+                    + ",".join(EXPECTED_KEYS)
                     )
+
 
 def test_valid_api_authenticates():
     """Sample pytest test function with the pytest fixture as an argument."""

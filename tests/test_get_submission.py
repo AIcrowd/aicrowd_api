@@ -14,10 +14,11 @@ try:
     AUTH_TOKEN = os.environ["AUTH_TOKEN"]
     EXAMPLE_API_KEY = os.environ["EXAMPLE_API_KEY"]
 except Exception as e:
-    raise Exception("Environment variables do not seem to be set. \
-                    Please set the following env variables : " + \
-                    ",".join(EXPECTED_KEYS)
+    raise Exception("Environment variables do not seem to be set. "
+                    + "Please set the following env variables : "
+                    + ",".join(EXPECTED_KEYS)
                     )
+
 
 def test_works_for_correct_submission_id():
     """Correct submission id returns a valid submission object"""
@@ -30,6 +31,7 @@ def test_works_for_correct_submission_id():
     assert submission.score_secondary == 0.00608137471612
     assert submission.grading_status == "graded"
     print(submission)
+
 
 def test_does_not_work_for_correct_submission_id():
     """Incorrect submission id throws an Exception"""
