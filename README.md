@@ -17,11 +17,21 @@ pip install -r requirements_dev.txt
 pip install -e .
 ```
 # Usage
-* Instantiate API object
+## Instantiate API object
 ```python
 from crowdai_api import API as CROWDAI_API
 auth_token="<YOUR CROWDAI AUTH TOKEN>"
 api = CROWDAI_API(auth_token)
+```
+
+## Authenticate participant
+* with `API_KEY`
+```python
+api.authenticate_participant(EXAMPLE_API_KEY)
+```
+* with `username`
+```python
+api_key = api.authenticate_participant_with_username("spMohanty")
 ```
 
 ## Create Submission

@@ -21,8 +21,6 @@ except Exception as e:
 
 def test_works_for_correct_submission_id():
     """Correct submission id returns a valid submission object"""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
     api = CROWDAI_API(AUTH_TOKEN)
     challenge_id = "IEEEInvestmentRankingChallenge"
     submission_id = 5030
@@ -35,8 +33,6 @@ def test_works_for_correct_submission_id():
 
 def test_does_not_work_for_correct_submission_id():
     """Incorrect submission id throws an Exception"""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
     api = CROWDAI_API(AUTH_TOKEN)
     challenge_id = "IEEEInvestmentRankingChallenge"
     submission_id = 50300000000001

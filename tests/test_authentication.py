@@ -18,8 +18,6 @@ except Exception as e:
 
 def test_valid_api_authenticates():
     """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
     api = CROWDAI_API(AUTH_TOKEN)
     is_valid_participant, participant_id, _ = \
         api.authenticate_participant(EXAMPLE_API_KEY)
@@ -30,8 +28,6 @@ def test_valid_api_authenticates():
 
 def test_invalid_api_doesnot_authenticates():
     """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
     api = CROWDAI_API(AUTH_TOKEN)
     is_valid_participant, participant_id, _ = \
         api.authenticate_participant(EXAMPLE_API_KEY)
