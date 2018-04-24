@@ -92,7 +92,6 @@ class CrowdAISubmission:
                                  "patch", url, payload=_payload)
         response_body = json.loads(response.text)
         if response.status_code == 202:
-            print(response_body)
             # Everything went well. Do nothing
             pass
         else:
