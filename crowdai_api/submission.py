@@ -51,6 +51,8 @@ class CrowdAISubmission:
             without initialising participant api_key")
 
         _object["challenge_client_name"] = self.challenge_id
+        if self.round_id:
+            _object["challenge_round_id"] = self.round_id
         _object["api_key"] = self.api_key
         if self.score and self.score_secondary:
             _object["score"] = self.score
