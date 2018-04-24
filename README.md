@@ -4,7 +4,19 @@ python client for server side API of the [crowdai.org](https://www.crowdai.org) 
 * Free software: GNU General Public License v3
 * Documentation: https://crowdai-api.readthedocs.io.
 
-# Usage :
+# Installation
+## Deployment
+```bash
+pip install git+https://github.com/crowdAI/crowdai_api.git
+```
+## Development
+```bash
+git clone https://github.com/crowdAI/crowdai_api
+cd crowdai_api
+pip install -r requirements_dev.txt
+pip install -e .
+```
+# Usage
 * Instantiate API object
 ```python
 from crowdai_api import API as CROWDAI_API
