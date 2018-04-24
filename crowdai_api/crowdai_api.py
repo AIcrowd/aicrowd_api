@@ -76,11 +76,15 @@ class API:
             message = response_body["message"]
             return (False, False, message)
 
-    def get_submission(self, submission_id):
-        url = "{}/{}/{}".format(self.base_url, "submissions", submission_id)
-        response = make_api_call(self.auth_token, "get", url)
-        _submission_object = json.loads(response)
-        print(response.text)
+    def get_submission(self, challenge_id, submission_id):
+        submission = CrowdAISubmission()
+        submission.api_key = self.participant_api_key
+        submission.base_url = self.base_url
+        submission.auth_token = self.auth_token
+        submission.id = submission_id
+        submission.challenge_id = challenge_id
+        submission.sync_with_server()
+        return submission
 
     def create_submission(self, challenge_id):
         submission = CrowdAISubmission()
@@ -91,41 +95,3 @@ class API:
 
         submission.create_on_server()
         return submission
-        # _payload = {}
-        # _payload["challenge_client_name"] = challenge_id
-        # _payload["api_key"] = self.participant_api_key
-        # _payload["grading_status"] = "submitted"
-        # _payload["meta"] = {}
-        #
-        # response = make_api_call(self.auth_token,
-        #                          "post", url, payload=_payload)
-        # response_body = json.loads(response.text)
-        # if response.status_code == 202:
-        #     submission_id = response_body["submission_id"]
-        #     #submissions_remaining = response_body["submissions_remaining"]
-        #     #message = response_body["message"]
-        #     return submission_id
-        # else:
-        #     #message = response_body["message"]
-        #
-        #     # TODO raise exception
-        #     return False
-
-
-    def update_submission(self, submission_id):
-        url = "{}/{}/{}".format(self.base_url, "external_graders", submission_id)
-        _payload = {}
-        _payload["challenge_client_name"] = "test_challenge"
-        _payload["api_key"] = self.participant_api_key
-        _payload["grading_status"] = "graded"
-        _payload["score"] = 0.1
-        _payload["score_secondary"] = 0.12
-        _payload["meta"] = {}
-        grader_logs = ""
-        for k in range(1000):
-            grader_logs+="aksjhdkahskjdhakshd  jkashdkhashkdhashdsa\n"
-        _payload["meta"]["grader_logs"] = grader_logs
-        _payload["meta"] = json.dumps(_payload["meta"])
-        response = make_api_call(self.auth_token, "patch", url, payload=_payload)
-        print(response.status_code)
-        print(response.text)

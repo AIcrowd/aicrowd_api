@@ -24,7 +24,7 @@ class CrowdAISubmission:
                  base_url="https://www.crowdai.org/api"):
         self.score = score
         self.score_secondary = score_secondary
-        self.submission_id = submission_id
+        self.id = submission_id
         self.grading_status = grading_status
         self.message = message
         self.meta = meta
@@ -78,7 +78,7 @@ class CrowdAISubmission:
         response_body = json.loads(response.text)
         if response.status_code == 202:
             submission_id = response_body["submission_id"]
-            self.submission_id = submission_id
+            self.id = submission_id
         else:
             raise CrowdAIRemoteException(response_body["message"])
 
@@ -86,12 +86,13 @@ class CrowdAISubmission:
         """Update the current submission object on the server
         """
         url = "{}/{}/{}".format(self.base_url,
-                                "external_graders", self.submission_id)
+                                "external_graders", self.id)
         _payload = self._serialize()
         response = make_api_call(self.auth_token,
                                  "patch", url, payload=_payload)
         response_body = json.loads(response.text)
         if response.status_code == 202:
+            print(response_body)
             # Everything went well. Do nothing
             pass
         else:
@@ -102,6 +103,25 @@ class CrowdAISubmission:
         If a submission_id exists, then gets the latest values from the server
         and updates the relevant fields.
         """
+        if self.id is False or self.challenge_id is False:
+            raise CrowdAIAPIException("submission_id and challenge_id has \
+            to be initialized before a sync_with_server operation \
+            can complete.")
+
+        url = "{}/{}/{}".format(self.base_url, "submissions",
+                                self.id)
+        response = make_api_call(self.auth_token, "get", url)
+        _submission_object = json.loads(response.text)
+        # print(json.dumps(
+        #     _submission_object,
+        #     sort_keys=True,
+        #     indent=4,
+        #     separators=(',', ': ')
+        # ))
+
+        self.grading_status = _submission_object["grading_status_cd"]
+        self.score = _submission_object["score"]
+        self.score = _submission_object["score_secondary"]
 
     def __repr__(self):
         def _template(key, value, tabfirst=True):
@@ -114,7 +134,7 @@ class CrowdAISubmission:
         string = ""
         string += "="*40 + "\n"
         string += _template("CrowdAISubmission",
-                            self.submission_id, tabfirst=False)
+                            self.id, tabfirst=False)
         string += _template("challenge_id", self.challenge_id)
         string += _template("round_id", self.round_id)
         string += _template("score", self.score)
