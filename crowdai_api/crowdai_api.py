@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .helpers import make_api_call
 from .submission import CrowdAISubmission
-from .exceptions import CrowdAIAPIException
+from .exceptions import CrowdAIAPIException, CrowdAIRemoteException
 import json
 
 __docformat__ = 'reStructuredText'
@@ -41,12 +41,8 @@ class API:
             self.participant_api_key = response_body["api_key"]
         else:
             message = response_body["message"]
-            raise Exception(message)
-            # TODO: Raise Exception
-            print("Unable to authenticate : ", message)
-
-        return self.participant_api_key
-
+            raise CrowdAIRemoteException(message)
+        self.authenticate_participant(self.participant_api_key)
 
     def authenticate_participant(self, api_key):
         """Authenticate API key of a participant
@@ -70,11 +66,9 @@ class API:
 
             self.participant_api_key = api_key
             self.participant_id = participant_id
-
-            return (True, participant_id, message)
         else:
             message = response_body["message"]
-            return (False, False, message)
+            raise CrowdAIRemoteException(message)
 
     def get_submission(self, challenge_id, submission_id):
         submission = CrowdAISubmission()
