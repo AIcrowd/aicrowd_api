@@ -34,7 +34,7 @@ class CrowdAISubmission:
         self.round_id = False
         self.base_url = base_url
 
-    def _serialize(self):
+    def _serialize(self, meta_overwrite=False):
         """Serializes a submission object into an API compatible JSON
 
         :return json object
@@ -65,9 +65,12 @@ class CrowdAISubmission:
 
         _object["grading_status"] = self.grading_status
         _object["message"] = self.message
-        if self.meta != {}:
-            _object["meta"] = json.dumps(self.meta)
-
+        if len(self.meta.keys()) > 0:
+            # Serialize JSON in a POST friendly way
+            for _key in self.meta.keys():
+                _object["meta[{}]".format(_key)] = self.meta[_key]
+            if meta_overwrite:
+                _object["meta_overwrite"] = True
         return _object
 
     def create_on_server(self):
@@ -82,12 +85,12 @@ class CrowdAISubmission:
         else:
             raise CrowdAIRemoteException(response_body["message"])
 
-    def update(self):
+    def update(self, meta_overwrite=False):
         """Update the current submission object on the server
         """
         url = "{}/{}/{}".format(self.base_url,
                                 "external_graders", self.id)
-        _payload = self._serialize()
+        _payload = self._serialize(meta_overwrite=meta_overwrite)
         response = make_api_call(self.auth_token,
                                  "patch", url, payload=_payload)
         response_body = json.loads(response.text)
@@ -113,16 +116,29 @@ class CrowdAISubmission:
         if response.status_code is not 200:
             raise CrowdAIRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
+        # print("Response from server : ")
         # print(json.dumps(
         #     _submission_object,
         #     sort_keys=True,
         #     indent=4,
         #     separators=(',', ': ')
         # ))
-
         self.grading_status = _submission_object["grading_status_cd"]
         self.score = _submission_object["score"]
         self.score_secondary = _submission_object["score_secondary"]
+        if "meta" in _submission_object.keys():
+            if type(_submission_object["meta"]) == dict:
+                self.meta = _submission_object["meta"]
+            else:
+                try:
+                    self.meta = json.loads(_submission_object["meta"])
+                except Exception:
+                    print(
+                        "Received invalid meta key : {}, silently ignoring..."
+                        .format(
+                            _submission_object["meta"]
+                            )
+                        )
 
     def __repr__(self):
         def _template(key, value, tabfirst=True):
