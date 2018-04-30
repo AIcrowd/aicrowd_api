@@ -31,9 +31,6 @@ setup(
     ],
     description="python api for interacting with server side api of crowdai.org webapp",
     entry_points={
-        'console_scripts': [
-            'crowdai_api=crowdai_api.cli:main',
-        ],
     },
     install_requires=requirements,
     license="GNU General Public License v3",
