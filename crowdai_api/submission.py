@@ -16,8 +16,8 @@ class CrowdAISubmission:
                  score_secondary=False,
                  submission_id=False,
                  grading_status="submitted",
-                 message="",
-                 long_description="",
+                 message=False,
+                 long_description=False,
                  meta={},
                  api_key=False,
                  auth_token=False,
@@ -61,9 +61,8 @@ class CrowdAISubmission:
             if not self.score_secondary:
                 raise CrowdAIAPIException("Score Secondary is null. \
 The currrent API expects a token value for score secondary when score is set.")
-
-        if self.score_secondary:
-            _object["score_secondary"] = self.score_secondary
+            else:
+                _object["score_secondary"] = self.score_secondary
 
         if self.grading_status not in ['submitted', 'initiated',
                                        'graded', 'failed']:
@@ -71,7 +70,12 @@ The currrent API expects a token value for score secondary when score is set.")
             with invalid grading status : {}".format(self.grading_status))
 
         _object["grading_status"] = self.grading_status
-        _object["message"] = self.message
+        if self.message:
+            _object["grading_message"] = self.message
+
+        if self.long_description:
+            _object["comment"] = self.long_description
+
         if len(self.meta.keys()) > 0:
             # Serialize JSON in a POST friendly way
             for _key in self.meta.keys():
