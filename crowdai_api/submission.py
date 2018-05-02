@@ -19,6 +19,7 @@ class CrowdAISubmission:
                  message=False,
                  long_description=False,
                  meta={},
+                 youtube_key=False,
                  api_key=False,
                  auth_token=False,
                  challenge_id=False,
@@ -30,6 +31,7 @@ class CrowdAISubmission:
         self.message = message
         self.long_description = ""
         self.meta = meta
+        self.youtube_key = youtube_key
         self.api_key = api_key
         self.auth_token = auth_token
         self.challenge_id = challenge_id
@@ -75,6 +77,11 @@ The currrent API expects a token value for score secondary when score is set.")
 
         if self.long_description:
             _object["comment"] = self.long_description
+
+        if self.youtube_key:
+            _object["media_large"] = self.youtube_key
+            _object["media_thumbnail"] = self.youtube_key
+            _object["media_content_type"] = "video/youtube"
 
         if len(self.meta.keys()) > 0:
             # Serialize JSON in a POST friendly way
