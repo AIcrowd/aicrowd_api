@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-requirements = ['requests>=2.18.4']
+requirements = ['requests>=2.18.4', 'python-gitlab>=1.3.0']
 
 setup_requirements = ['pytest-runner', ]
 

@@ -54,8 +54,13 @@ class CrowdAISubmission:
         if self.round_id:
             _object["challenge_round_id"] = self.round_id
         _object["api_key"] = self.api_key
-        if self.score and self.score_secondary:
+        if self.score:
             _object["score"] = self.score
+            if not self.score_secondary:
+                raise CrowdAIAPIException("Score Secondary is null. \
+The currrent API expects a token value for score secondary when score is set.")
+
+        if self.score_secondary:
             _object["score_secondary"] = self.score_secondary
 
         if self.grading_status not in ['submitted', 'initiated',
@@ -116,13 +121,14 @@ class CrowdAISubmission:
         if response.status_code is not 200:
             raise CrowdAIRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
-        # print("Response from server : ")
-        # print(json.dumps(
-        #     _submission_object,
-        #     sort_keys=True,
-        #     indent=4,
-        #     separators=(',', ': ')
-        # ))
+        print("Response from server : ")
+        print(json.dumps(
+            _submission_object,
+            sort_keys=True,
+            indent=4,
+            separators=(',', ': ')
+        ))
+
         self.grading_status = _submission_object["grading_status_cd"]
         self.score = _submission_object["score"]
         self.score_secondary = _submission_object["score_secondary"]
