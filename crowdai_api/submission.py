@@ -17,6 +17,7 @@ class CrowdAISubmission:
                  submission_id=False,
                  grading_status="submitted",
                  message="",
+                 long_description="",
                  meta={},
                  api_key=False,
                  auth_token=False,
@@ -27,6 +28,7 @@ class CrowdAISubmission:
         self.id = submission_id
         self.grading_status = grading_status
         self.message = message
+        self.long_description = ""
         self.meta = meta
         self.api_key = api_key
         self.auth_token = auth_token
