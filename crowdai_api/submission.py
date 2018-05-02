@@ -58,9 +58,9 @@ class CrowdAISubmission:
         if self.round_id:
             _object["challenge_round_id"] = self.round_id
         _object["api_key"] = self.api_key
-        if self.score:
+        if self.score is not False:
             _object["score"] = self.score
-            if not self.score_secondary:
+            if self.score_secondary is False:
                 raise CrowdAIAPIException("Score Secondary is null. \
 The currrent API expects a token value for score secondary when score is set.")
             else:
