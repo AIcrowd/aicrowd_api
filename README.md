@@ -1,4 +1,5 @@
 # crowdAI API
+![build status](https://api.travis-ci.org/crowdAI/crowdai_api.svg?branch=master)
 python client for server side API of the [crowdai.org](https://www.crowdai.org) webapp.
 
 * Free software: GNU General Public License v3
