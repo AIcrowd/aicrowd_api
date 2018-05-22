@@ -29,7 +29,7 @@ class CrowdAISubmission:
         self.id = submission_id
         self.grading_status = grading_status
         self.message = message
-        self.long_description = ""
+        self.long_description = long_description
         self.meta = meta
         self.youtube_key = youtube_key
         self.api_key = api_key
@@ -76,7 +76,7 @@ The currrent API expects a token value for score secondary when score is set.")
             _object["grading_message"] = self.message
 
         if self.long_description:
-            _object["comment"] = self.long_description
+            _object["description_markdown"] = self.long_description
 
         if self.youtube_key:
             _object["media_large"] = self.youtube_key
@@ -135,16 +135,21 @@ The currrent API expects a token value for score secondary when score is set.")
             raise CrowdAIRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
         print("Response from server : ")
-        # print(json.dumps(
-        #     _submission_object,
-        #     sort_keys=True,
-        #     indent=4,
-        #     separators=(',', ': ')
-        # ))
+        print(json.dumps(
+            _submission_object,
+            sort_keys=True,
+            indent=4,
+            separators=(',', ': ')
+        ))
 
         self.grading_status = _submission_object["grading_status_cd"]
         self.score = _submission_object["score"]
         self.score_secondary = _submission_object["score_secondary"]
+
+        if "description_markdown" in _submission_object.keys():
+            self.long_description = _submission_object["description_markdown"]
+
+
         if "meta" in _submission_object.keys():
             if type(_submission_object["meta"]) == dict:
                 self.meta = _submission_object["meta"]
