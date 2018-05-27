@@ -73,13 +73,12 @@ def test_updates_submission_with_meta():
     submission.meta["something"] = "A_1"
     submission.meta["something_else"] = "B_1"
     submission.update()
+    submission_from_server = api.get_submission(challenge_id, submission.id)
     assert submission_from_server.score == 0.198
     assert submission_from_server.score_secondary == 0.199
     assert submission_from_server.grading_status == "graded"
     assert submission_from_server.meta["something"] == "A_1"
     assert submission_from_server.meta["something_else"] == "B_1"
-
-
 
 def test_null_score_secondary_raises_exception():
     """Tests that an exception is raised when score is set and score_secondary
