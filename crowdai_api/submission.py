@@ -38,7 +38,7 @@ class CrowdAISubmission:
         self.round_id = False
         self.base_url = base_url
 
-    def _serialize(self, meta_overwrite=False):
+    def _serialize(self, meta_overwrite=True):
         """Serializes a submission object into an API compatible JSON
 
         :return json object
@@ -103,7 +103,7 @@ The currrent API expects a token value for score secondary when score is set.")
         else:
             raise CrowdAIRemoteException(response_body["message"])
 
-    def update(self, meta_overwrite=False):
+    def update(self, meta_overwrite=True):
         """Update the current submission object on the server
         """
         url = "{}/{}/{}".format(self.base_url,
