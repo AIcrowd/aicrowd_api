@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 import os
+import sys
 import logging
 import redis
 import json
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+CROWDAI_DEBUG_MODE = os.getenv("CROWDAI_DEBUG_MODE", False)
+if CROWDAI_DEBUG_MODE:
+    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+else:
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logger = logging.getLogger(__name__, )
 
 class CrowdAIEvents:
     CROWDAI_EVENT_INFO="CROWDAI_EVENT_INFO"
