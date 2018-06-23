@@ -10,3 +10,4 @@ twine==1.10.0
 
 pytest
 pytest-runner
+redis==2.10.6

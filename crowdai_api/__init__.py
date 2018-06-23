@@ -9,4 +9,5 @@ __version__ = '0.1.0'
 from .crowdai_api import API
 from .submission import CrowdAISubmission
 from .gitlab_submission import GitlabSubmission
+from .events import CrowdAIEvents
 from .exceptions import *

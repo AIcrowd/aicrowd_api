@@ -29,7 +29,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    description="python api for interacting with server side api of crowdai.org webapp",
+    description="python api for interacting with crowdAI grading infrastructure",
     entry_points={
     },
     install_requires=requirements,
@@ -43,6 +43,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/crowdai/crowdai_api',
-    version='0.1.1.dev8',
+    version='0.1.1.dev9',
     zip_safe=False,
 )
