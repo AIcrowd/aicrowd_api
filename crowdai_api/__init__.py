@@ -14,7 +14,8 @@ from .exceptions import *
 
 import atexit
 def exit_handler():
-    CrowdAIEvents.register_event(
+    crowdai_events = CrowdAIEvents()
+    crowdai_events.register_event(
         event_type=CrowdAIEvents.CROWDAI_EVENT_CODE_EXIT
     )
 atexit.register(exit_handler)
