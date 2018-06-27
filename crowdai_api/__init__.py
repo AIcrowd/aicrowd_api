@@ -13,8 +13,8 @@ from .events import CrowdAIEvents
 from .exceptions import *
 
 import atexit
-def script_exit():
+def exit_handler():
     CrowdAIEvents.register_event(
         event_type=CrowdAIEvents.CROWDAI_EVENT_CODE_EXIT
     )
-atexit.register(atexit)
+atexit.register(exit_handler)
