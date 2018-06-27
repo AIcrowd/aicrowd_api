@@ -11,3 +11,10 @@ from .submission import CrowdAISubmission
 from .gitlab_submission import GitlabSubmission
 from .events import CrowdAIEvents
 from .exceptions import *
+
+import atexit
+def script_exit():
+    CrowdAIEvents.register_event(
+        event_type=CrowdAIEvents.CROWDAI_EVENT_CODE_EXIT
+    )
+atexit.register(atexit)

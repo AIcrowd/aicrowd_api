@@ -4,6 +4,7 @@ import sys
 import logging
 import redis
 import json
+import atexit
 
 CROWDAI_DEBUG_MODE = os.getenv("CROWDAI_DEBUG_MODE", False)
 if CROWDAI_DEBUG_MODE:
@@ -16,6 +17,7 @@ class CrowdAIEvents:
     CROWDAI_EVENT_INFO="CROWDAI_EVENT_INFO"
     CROWDAI_EVENT_ERROR="CROWDAI_EVENT_ERROR"
     CROWDAI_EVENT_SUCCESS="CROWDAI_EVENT_SUCCESS"
+    CROWDAI_EVENT_CODE_EXIT="CROWDAI_EVENT_CODE_EXIT"
 
     def __init__(self):
         self.IS_GRADING = os.getenv("CROWDAI_IS_GRADING", False)

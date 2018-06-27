@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-requirements = ['requests>=2.18.4', 'python-gitlab>=1.3.0', 'redis']
+requirements = ['requests>=2.18.4', 'python-gitlab>=1.3.0', 'redis', 'atexit']
 
 setup_requirements = ['pytest-runner', ]
 
@@ -43,6 +43,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/crowdai/crowdai_api',
-    version='0.1.1.dev12',
+    version='0.1.1.dev13',
     zip_safe=False,
 )
