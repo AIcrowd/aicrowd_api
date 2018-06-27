@@ -21,7 +21,7 @@ class CrowdAIEvents:
         self.IS_GRADING = os.getenv("CROWDAI_IS_GRADING", False)
         if self.IS_GRADING:
             self.REDIS_HOST = os.getenv("CROWDAI_REDIS_HOST", "localhost")
-            self.REDIS_PORT = os.getenv("CROWDAI_REDIS_PORT", "6397")
+            self.REDIS_PORT = os.getenv("CROWDAI_REDIS_PORT", "6379")
             self.REDIS_DB = os.getenv("CROWDAI_REDIS_DB", 0)
             self.REDIS_PASSWORD = os.getenv("CROWDAI_REDIS_PASSWORD", False)
             self.REDIS_COMMUNICATION_CHANNEL = \
