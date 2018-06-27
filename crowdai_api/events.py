@@ -20,6 +20,7 @@ class CrowdAIEvents:
     def __init__(self):
         self.IS_GRADING = os.getenv("CROWDAI_IS_GRADING", False)
         if self.IS_GRADING:
+            self.AGENT_ID = os.getenv("CROWDAI_AGENT_ID", "undefined")
             self.REDIS_HOST = os.getenv("CROWDAI_REDIS_HOST", "localhost")
             self.REDIS_PORT = os.getenv("CROWDAI_REDIS_PORT", "6379")
             self.REDIS_DB = os.getenv("CROWDAI_REDIS_DB", 0)
@@ -45,6 +46,7 @@ class CrowdAIEvents:
             # TODO : Add validation
             _object = {}
             _object["event_type"] = event_type
+            _object["agent_id"] = self.AGENT_ID
             _object["message"] = message
             _object["payload"] = payload
             r = redis.Redis(connection_pool=self.REDIS_POOL)
