@@ -5,6 +5,7 @@ import logging
 import redis
 import json
 import atexit
+import time
 
 CROWDAI_DEBUG_MODE = os.getenv("CROWDAI_DEBUG_MODE", False)
 if CROWDAI_DEBUG_MODE:
@@ -21,6 +22,8 @@ class CrowdAIEvents:
 
     def __init__(self):
         self.IS_GRADING = os.getenv("CROWDAI_IS_GRADING", False)
+        self.is_bootstrapped = False
+
         if self.IS_GRADING:
             self.AGENT_ID = os.getenv("CROWDAI_AGENT_ID", "undefined")
             self.REDIS_HOST = os.getenv("CROWDAI_REDIS_HOST", "localhost")
@@ -40,10 +43,32 @@ class CrowdAIEvents:
             # TODO: Add support for REDIS Password
             # TODO: Add tests
 
+    def bootstrap(self):
+        """
+            Wait for a redis connection to appear if in
+            grading mode
+        """
+        if self.IS_GRADING:
+            if not self.is_bootstrapped:
+                logger.info("Waiting for redis connection...")
+                while True:
+                    try:
+                        r = redis.Redis(connection_pool=self.REDIS_POOL)
+                        r.keys()
+                        logger.info("Established connection with redis server...")
+                        self.is_bootstrapped = True
+                        break
+                    except redis.exceptions.ConnectionError:
+                        time.sleep(1)
+                        continue
+
+
+
     def register_event(self, event_type, message="", payload={}):
         logger.debug("Received crowdAI API Event : {} {} {} ".format(
             event_type, message, payload
         ))
+        self.bootstrap()
         if self.IS_GRADING:
             # TODO : Add validation
             _object = {}
