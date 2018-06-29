@@ -43,6 +43,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/crowdai/crowdai_api',
-    version='0.1.1.dev17',
+    version='0.1.1.dev18',
     zip_safe=False,
 )
