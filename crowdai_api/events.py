@@ -30,6 +30,9 @@ class CrowdAIEvents:
             self.REDIS_PORT = os.getenv("CROWDAI_REDIS_PORT", "6379")
             self.REDIS_DB = os.getenv("CROWDAI_REDIS_DB", 0)
             self.REDIS_PASSWORD = os.getenv("CROWDAI_REDIS_PASSWORD", False)
+            self.REDIS_SOCKET_TIMEOUT = os.getenv("REDIS_SOCKET_TIMEOUT", 60)
+            self.REDIS_SOCKET_CONNECT_TIMEOUT = os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60)
+
             self.REDIS_COMMUNICATION_CHANNEL = \
                 os.getenv(  "CROWDAI_REDIS_COMMUNICATION_CHANNEL",
                             "CROWDAI_REDIS_COMMUNICATION_CHANNEL"
@@ -53,7 +56,9 @@ class CrowdAIEvents:
                 logger.debug("Waiting for redis connection...")
                 while True:
                     try:
-                        r = redis.Redis(connection_pool=self.REDIS_POOL)
+                        r = redis.Redis(connection_pool=self.REDIS_POOL,
+                                        socket_timeout=self.REDIS_SOCKET_TIMEOUT,
+                                        socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
                         r.keys()
                         logger.debug("Established connection with redis server...")
                         self.is_bootstrapped = True
@@ -75,12 +80,14 @@ class CrowdAIEvents:
                 # with other events
                 import time
                 time.sleep(2)
-            
+
             # TODO : Add validation
             _object = {}
             _object["event_type"] = event_type
             _object["agent_id"] = self.AGENT_ID
             _object["message"] = message
             _object["payload"] = payload
-            r = redis.Redis(connection_pool=self.REDIS_POOL)
+            r = redis.Redis(connection_pool=self.REDIS_POOL,
+                            socket_timeout=self.REDIS_SOCKET_TIMEOUT,
+                            socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
             r.lpush(self.REDIS_COMMUNICATION_CHANNEL, json.dumps(_object))
