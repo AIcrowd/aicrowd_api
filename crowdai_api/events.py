@@ -50,12 +50,12 @@ class CrowdAIEvents:
         """
         if self.IS_GRADING:
             if not self.is_bootstrapped:
-                logger.info("Waiting for redis connection...")
+                logger.debug("Waiting for redis connection...")
                 while True:
                     try:
                         r = redis.Redis(connection_pool=self.REDIS_POOL)
                         r.keys()
-                        logger.info("Established connection with redis server...")
+                        logger.debug("Established connection with redis server...")
                         self.is_bootstrapped = True
                         break
                     except redis.exceptions.ConnectionError:
@@ -70,6 +70,12 @@ class CrowdAIEvents:
         ))
         self.bootstrap()
         if self.IS_GRADING:
+            if event_type == self.CROWDAI_EVENT_CODE_EXIT:
+                # Wait for 2 seconds to avoid race conditions
+                # with other events
+                import time
+                time.sleep(2)
+            
             # TODO : Add validation
             _object = {}
             _object["event_type"] = event_type
