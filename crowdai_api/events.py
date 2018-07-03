@@ -30,8 +30,8 @@ class CrowdAIEvents:
             self.REDIS_PORT = os.getenv("CROWDAI_REDIS_PORT", "6379")
             self.REDIS_DB = os.getenv("CROWDAI_REDIS_DB", 0)
             self.REDIS_PASSWORD = os.getenv("CROWDAI_REDIS_PASSWORD", False)
-            self.REDIS_SOCKET_TIMEOUT = os.getenv("REDIS_SOCKET_TIMEOUT", 60)
-            self.REDIS_SOCKET_CONNECT_TIMEOUT = os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60)
+            self.REDIS_SOCKET_TIMEOUT = float(os.getenv("REDIS_SOCKET_TIMEOUT", 60))
+            self.REDIS_SOCKET_CONNECT_TIMEOUT = float(os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60))
 
             self.REDIS_COMMUNICATION_CHANNEL = \
                 os.getenv(  "CROWDAI_REDIS_COMMUNICATION_CHANNEL",
