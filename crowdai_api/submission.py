@@ -141,13 +141,13 @@ The currrent API expects a token value for score secondary when score is set.")
         if response.status_code is not 200:
             raise CrowdAIRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
-        print("Response from server : ")
-        print(json.dumps(
-            _submission_object,
-            sort_keys=True,
-            indent=4,
-            separators=(',', ': ')
-        ))
+        # print("Response from server : ")
+        # print(json.dumps(
+        #     _submission_object,
+        #     sort_keys=True,
+        #     indent=4,
+        #     separators=(',', ': ')
+        # ))
 
         self.grading_status = _submission_object["grading_status_cd"]
         self.score = _submission_object["score"]
