@@ -49,12 +49,10 @@ class CrowdAISubmission:
         _object = {}
 
         if self.challenge_id is False:
-            raise CrowdAIAPIException("Submission _serialize called \
-            without initialising challenge_id")
+            raise CrowdAIAPIException("Submission _serialize called without initialising challenge_id")
 
         if self.api_key is False:
-            raise CrowdAIAPIException("Submission _serialize called \
-            without initialising participant api_key")
+            raise CrowdAIAPIException("Submission _serialize called without initialising participant api_key")
 
         _object["challenge_client_name"] = self.challenge_id
         if self.round_id:

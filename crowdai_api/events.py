@@ -69,7 +69,7 @@ class CrowdAIEvents:
 
 
 
-    def register_event(self, event_type, message="", payload={}):
+    def register_event(self, event_type, message="", payload={}, blocking=False):
         logger.debug("Received crowdAI API Event : {} {} {} ".format(
             event_type, message, payload
         ))
@@ -90,4 +90,19 @@ class CrowdAIEvents:
             r = redis.Redis(connection_pool=self.REDIS_POOL,
                             socket_timeout=self.REDIS_SOCKET_TIMEOUT,
                             socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
+
             r.lpush(self.REDIS_COMMUNICATION_CHANNEL, json.dumps(_object))
+            if ack:
+                """
+                    If blocking==True, then wait indefitely for an acknowledgement/response
+                    from the grading infrastructure.
+                    The response will be a valid json object.
+                """
+                CROWDAI_BLOCKING_RESPONSE_CHANNEL = \
+                    os.getenv(
+                        "CROWDAI_BLOCKING_RESPONSE_CHANNEL",
+                        "CROWDAI_BLOCKING_RESPONSE_CHANNEL"
+                    )
+                channel, data = r.brpop(CROWDAI_BLOCKING_RESPONSE_CHANNEL)
+                ackowledgement = json.loads(data)
+                return acknowledgement
