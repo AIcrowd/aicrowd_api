@@ -92,7 +92,7 @@ class CrowdAIEvents:
                             socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
 
             r.lpush(self.REDIS_COMMUNICATION_CHANNEL, json.dumps(_object))
-            if ack:
+            if blocking:
                 """
                     If blocking==True, then wait indefitely for an acknowledgement/response
                     from the grading infrastructure.
