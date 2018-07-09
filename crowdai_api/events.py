@@ -75,12 +75,6 @@ class CrowdAIEvents:
         ))
         self.bootstrap()
         if self.IS_GRADING:
-            if event_type == self.CROWDAI_EVENT_CODE_EXIT:
-                # Wait for 2 seconds to avoid race conditions
-                # with other events
-                import time
-                time.sleep(2)
-
             # TODO : Add validation
             _object = {}
             _object["event_type"] = event_type
