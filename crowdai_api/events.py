@@ -98,5 +98,5 @@ class CrowdAIEvents:
                         "CROWDAI_BLOCKING_RESPONSE_CHANNEL"
                     )
                 channel, data = r.brpop(CROWDAI_BLOCKING_RESPONSE_CHANNEL)
-                ackowledgement = json.loads(data)
+                acknowledgement = json.loads(data)
                 return acknowledgement
