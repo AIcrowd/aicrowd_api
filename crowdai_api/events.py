@@ -97,6 +97,17 @@ class CrowdAIEvents:
                         "CROWDAI_BLOCKING_RESPONSE_CHANNEL",
                         "CROWDAI_BLOCKING_RESPONSE_CHANNEL"
                     )
-                channel, data = r.brpop(CROWDAI_BLOCKING_RESPONSE_CHANNEL)
-                acknowledgement = json.loads(data)
-                return acknowledgement
+                while True:
+                    """
+                    An indefinite While loop to ensure the socket timeouts
+                    dont interfere with the expected behaviour of the
+                    blocking calls.
+                    """
+                    params = r.brpop(CROWDAI_BLOCKING_RESPONSE_CHANNEL)
+                    if params:
+                        channel, data = params
+                        acknowledgement = json.loads(data)
+                        return acknowledgement
+                    else:
+                        time.sleep(1)
+                        continue
