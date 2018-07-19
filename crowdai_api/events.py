@@ -20,9 +20,10 @@ class CrowdAIEvents:
     CROWDAI_EVENT_SUCCESS="CROWDAI_EVENT_SUCCESS"
     CROWDAI_EVENT_CODE_EXIT="CROWDAI_EVENT_CODE_EXIT"
 
-    def __init__(self):
+    def __init__(self, with_oracle=False):
         self.IS_GRADING = os.getenv("CROWDAI_IS_GRADING", False)
         self.is_bootstrapped = False
+        self.with_oracle = with_oracle #Marks if the communication is happenning with the oracle
 
         if self.IS_GRADING:
             self.AGENT_ID = os.getenv("CROWDAI_AGENT_ID", "undefined")
@@ -36,6 +37,15 @@ class CrowdAIEvents:
             self.REDIS_COMMUNICATION_CHANNEL = \
                 os.getenv(  "CROWDAI_REDIS_COMMUNICATION_CHANNEL",
                             "CROWDAI_REDIS_COMMUNICATION_CHANNEL"
+                        )
+            self.ORACLE_COMMUNICATION_CHANNEL = \
+                os.getenv(  "CROWDAI_ORACLE_COMMUNICATION_CHANNEL",
+                            "CROWDAI_ORACLE_COMMUNICATION_CHANNEL"
+                        )
+
+            self.BLOCKING_RESPONSE_CHANNEL = \
+                os.getenv(  "CROWDAI_BLOCKING_RESPONSE_CHANNEL",
+                            "CROWDAI_BLOCKING_RESPONSE_CHANNEL"
                         )
 
             self.REDIS_POOL = redis.ConnectionPool(
@@ -67,7 +77,33 @@ class CrowdAIEvents:
                         time.sleep(1)
                         continue
 
+    def get_event(self):
+        logger.debug("Attempting to GET crowdAI API Event ")
+        self.bootstrap()
+        if self.IS_GRADING:
+            r = redis.Redis(connection_pool=self.REDIS_POOL,
+                            socket_timeout=self.REDIS_SOCKET_TIMEOUT,
+                            socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
 
+            if self.with_oracle:
+                communication_channel = self.ORACLE_COMMUNICATION_CHANNEL
+            else:
+                communication_channel = self.REDIS_COMMUNICATION_CHANNEL
+
+            while True:
+                """
+                    An indefinite/blocking wait until we receive a message
+                """
+                params = r.brpop(communication_channel)
+                if params:
+                    channel, data = params
+                    logger.debug("Received crowdAI API Event {}".format(data))
+                    return data
+                else:
+                    time.sleep(1)
+                    continue
+        else:
+            raise Exception("Attempting to GET event when CROWDAI_IS_GRADING is False")
 
     def register_event(self, event_type, message="", payload={}, blocking=False):
         logger.debug("Received crowdAI API Event : {} {} {} ".format(
@@ -85,25 +121,25 @@ class CrowdAIEvents:
                             socket_timeout=self.REDIS_SOCKET_TIMEOUT,
                             socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
 
-            r.lpush(self.REDIS_COMMUNICATION_CHANNEL, json.dumps(_object))
+            if self.with_oracle:
+                communication_channel = self.ORACLE_COMMUNICATION_CHANNEL
+            else:
+                communication_channel = self.REDIS_COMMUNICATION_CHANNEL
+
+            r.lpush(communication_channel, json.dumps(_object))
             if blocking:
                 """
                     If blocking==True, then wait indefitely for an acknowledgement/response
                     from the grading infrastructure.
                     The response will be a valid json object.
                 """
-                CROWDAI_BLOCKING_RESPONSE_CHANNEL = \
-                    os.getenv(
-                        "CROWDAI_BLOCKING_RESPONSE_CHANNEL",
-                        "CROWDAI_BLOCKING_RESPONSE_CHANNEL"
-                    )
                 while True:
                     """
                     An indefinite While loop to ensure the socket timeouts
                     dont interfere with the expected behaviour of the
                     blocking calls.
                     """
-                    params = r.brpop(CROWDAI_BLOCKING_RESPONSE_CHANNEL)
+                    params = r.brpop(self.BLOCKING_RESPONSE_CHANNEL)
                     if params:
                         channel, data = params
                         acknowledgement = json.loads(data)
