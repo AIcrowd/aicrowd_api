@@ -57,6 +57,15 @@ class CrowdAIEvents:
             # TODO: Add support for REDIS Password
             # TODO: Add tests
 
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.next()
+
+    def next(self):
+        return self.get_event()
+
     def bootstrap(self):
         """
             Wait for a redis connection to appear if in
