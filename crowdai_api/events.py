@@ -33,6 +33,7 @@ class CrowdAIEvents:
             self.REDIS_PASSWORD = os.getenv("CROWDAI_REDIS_PASSWORD", False)
             self.REDIS_SOCKET_TIMEOUT = float(os.getenv("REDIS_SOCKET_TIMEOUT", 60))
             self.REDIS_SOCKET_CONNECT_TIMEOUT = float(os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60))
+            self.REDIS_CALL_SLEEP_TIME = float(os.getenv("REDIS_CALL_SLEEP_TIME", 1))
 
             self.REDIS_COMMUNICATION_CHANNEL = \
                 os.getenv(  "CROWDAI_REDIS_COMMUNICATION_CHANNEL",
@@ -74,7 +75,7 @@ class CrowdAIEvents:
                         self.is_bootstrapped = True
                         break
                     except redis.exceptions.ConnectionError:
-                        time.sleep(1)
+                        time.sleep(self.REDIS_CALL_SLEEP_TIME)
                         continue
 
     def get_event(self):
@@ -100,7 +101,7 @@ class CrowdAIEvents:
                     logger.debug("Received crowdAI API Event {}".format(data))
                     return data
                 else:
-                    time.sleep(1)
+                    time.sleep(self.REDIS_CALL_SLEEP_TIME)
                     continue
         else:
             raise Exception("Attempting to GET event when CROWDAI_IS_GRADING is False")
@@ -145,5 +146,5 @@ class CrowdAIEvents:
                         acknowledgement = json.loads(data)
                         return acknowledgement
                     else:
-                        time.sleep(1)
+                        time.sleep(self.REDIS_CALL_SLEEP_TIME)
                         continue
