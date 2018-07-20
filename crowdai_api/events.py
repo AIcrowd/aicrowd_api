@@ -116,8 +116,8 @@ class CrowdAIEvents:
             raise Exception("Attempting to GET event when CROWDAI_IS_GRADING is False")
 
     def register_event(self, event_type, message="", payload={}, blocking=False):
-        logger.debug("Received crowdAI API Event : {} {} {} ".format(
-            event_type, message, payload
+        logger.debug("Registering crowdAI API Event : {} {} {} # with_oracle? : {}".format(
+            event_type, message, payload, self.with_oracle
         ))
         self.bootstrap()
         if self.IS_GRADING:
