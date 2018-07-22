@@ -108,6 +108,8 @@ class CrowdAIEvents:
                 if params:
                     channel, data = params
                     logger.debug("Received crowdAI API Event {}".format(data))
+                    if type(data) == bytes:
+                        data = data.decode('utf-8')
                     return json.loads(data)
                 else:
                     time.sleep(self.REDIS_CALL_SLEEP_TIME)
