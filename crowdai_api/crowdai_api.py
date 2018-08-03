@@ -71,7 +71,7 @@ class API:
             raise CrowdAIRemoteException(message)
 
     def get_submission(self, challenge_id, submission_id):
-        submission = CrowdAISubmission()
+        submission = CrowdAISubmission(base_url=self.base_url)
         submission.api_key = self.participant_api_key
         submission.base_url = self.base_url
         submission.auth_token = self.auth_token
@@ -81,7 +81,7 @@ class API:
         return submission
 
     def create_submission(self, challenge_id, round_id=False):
-        submission = CrowdAISubmission()
+        submission = CrowdAISubmission(base_url=self.base_url)
         submission.api_key = self.participant_api_key
         submission.base_url = self.base_url
         submission.auth_token = self.auth_token
