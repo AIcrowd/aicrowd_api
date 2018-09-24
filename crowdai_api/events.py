@@ -117,6 +117,14 @@ class CrowdAIEvents:
         else:
             raise Exception("Attempting to GET event when CROWDAI_IS_GRADING is False")
 
+    def send_blocking_call_response(self, response):
+        response = json.dumps(response)
+        r = redis.Redis(connection_pool=self.REDIS_POOL,
+                        socket_timeout=self.REDIS_SOCKET_TIMEOUT,
+                        socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
+
+        r.lpush(self.BLOCKING_RESPONSE_CHANNEL, response)
+
     def register_event(self, event_type, message="", payload={}, blocking=False):
         logger.debug("Registering crowdAI API Event : {} {} {} # with_oracle? : {}".format(
             event_type, message, payload, self.with_oracle
