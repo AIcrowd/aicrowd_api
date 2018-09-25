@@ -162,6 +162,8 @@ class CrowdAIEvents:
                     params = r.brpop(self.BLOCKING_RESPONSE_CHANNEL)
                     if params:
                         channel, data = params
+                        if type(data) == bytes:
+                            data = data.decode('utf-8')
                         acknowledgement = json.loads(data)
                         return acknowledgement
                     else:
