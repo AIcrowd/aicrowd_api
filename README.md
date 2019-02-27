@@ -35,7 +35,13 @@ api.authenticate_participant(EXAMPLE_API_KEY)
 ```python
 api_key = api.authenticate_participant_with_username("spMohanty")
 ```
+## Get all Submissions
+```python
 
+challenge_id = "test_challenge"
+submissions = api.get_all_submissions(challenge_id)
+print(submissions)
+```
 ## Create Submission
 ```python
 challenge_id = "test_challenge"

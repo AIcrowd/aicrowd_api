@@ -70,6 +70,38 @@ class API:
             message = response_body["message"]
             raise CrowdAIRemoteException(message)
 
+    def get_all_submissions(self, challenge_id, grading_status="graded"):
+        """Returns all submissions for a particular challenge id
+
+        :param challenge_id challenge_client_name from the challenge
+        :param grading_status ['submitted', 'initiated', 'graded', 'failed', "*"]
+            When grading_status == False, all possible grading_status are allowed
+
+        :return List of submission ids
+        :Example:
+
+        >>> api = API(auth_token)
+        >>> challenge_id = "test_challenge"
+        >>> submissions = api.get_all_submissions(challenge_id)
+        >>> print(submissions)
+
+        TODO: Write Tests for this call
+        """
+        assert grading_status in ['submitted', 'initiated', 'graded', 'failed', '*']
+        url = "{}/{}".format(self.base_url, "submissions")
+        payload = {}
+        payload["challenge_client_name"] = challenge_id
+        if grading_status != "*":
+            payload["grading_status"] = grading_status
+        response = make_api_call(self.auth_token, "get", url, payload=payload)
+        response_body = json.loads(response.text)
+        if response.status_code == 200:
+            submission_ids = response_body
+            return submission_ids
+        else:
+            message = response_body["message"]
+            raise CrowdAIRemoteException(message)
+
     def get_submission(self, challenge_id, submission_id):
         submission = CrowdAISubmission(base_url=self.base_url)
         submission.api_key = self.participant_api_key
