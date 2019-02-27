@@ -39,6 +39,7 @@ class CrowdAISubmission:
         self.challenge_id = challenge_id
         self.round_id = False
         self.base_url = base_url
+        self.raw_response = {}
 
     def _serialize(self, meta_overwrite=True):
         """Serializes a submission object into an API compatible JSON
@@ -87,7 +88,7 @@ The currrent API expects a token value for score secondary when score is set.")
             _object["media_large"] = self.image_key
             _object["media_thumbnail"] = self.image_key
             _object["media_content_type"] = "image/png"
-
+        
         if len(self.meta.keys()) > 0:
             # Serialize JSON in a POST friendly way
             for _key in self.meta.keys():
@@ -139,9 +140,10 @@ The currrent API expects a token value for score secondary when score is set.")
         if response.status_code is not 200:
             raise CrowdAIRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
+        self.raw_response = _submission_object
         # print("Response from server : ")
         # print(json.dumps(
-        #     _submission_object,
+        #     self.raw_response,
         #     sort_keys=True,
         #     indent=4,
         #     separators=(',', ': ')
