@@ -18,7 +18,7 @@ class API:
     """
     def __init__(self,
                  auth_token,
-                 base_url="https://www.crowdai.org/api",
+                 base_url="https://www.aicrowd.com/api",
                  ):
         self.auth_token = auth_token
         self.base_url = base_url

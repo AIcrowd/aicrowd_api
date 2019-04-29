@@ -20,11 +20,12 @@ class CrowdAISubmission:
                  long_description=False,
                  meta={},
                  youtube_key=False,
+                 video_keys=False,
                  image_key=False,
                  api_key=False,
                  auth_token=False,
                  challenge_id=False,
-                 base_url="https://www.crowdai.org/api"):
+                 base_url="https://www.aicrowd.com/api"):
         self.score = score
         self.score_secondary = score_secondary
         self.id = submission_id
@@ -33,6 +34,7 @@ class CrowdAISubmission:
         self.long_description = long_description
         self.meta = meta
         self.youtube_key = youtube_key
+        self.video_keys = video_keys
         self.image_key = image_key
         self.api_key = api_key
         self.auth_token = auth_token
@@ -83,6 +85,14 @@ The currrent API expects a token value for score secondary when score is set.")
             _object["media_large"] = self.youtube_key
             _object["media_thumbnail"] = self.youtube_key
             _object["media_content_type"] = "video/youtube"
+        
+        if self.video_keys:
+            assert type(self.video_keys) == dict
+            assert "media_large" in self.video_keys.keys()
+            assert "media_thumbnail" in self.video_keys.keys()
+            _object["media_large"] = self.video_keys["media_large"]
+            _object["media_thumbnail"] = self.video_keys["media_thumbnail"]
+            _object["media_content_type"] = "video/mp4"
 
         if self.image_key:
             _object["media_large"] = self.image_key
@@ -141,13 +151,13 @@ The currrent API expects a token value for score secondary when score is set.")
             raise CrowdAIRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
         self.raw_response = _submission_object
-        # print("Response from server : ")
-        # print(json.dumps(
-        #     self.raw_response,
-        #     sort_keys=True,
-        #     indent=4,
-        #     separators=(',', ': ')
-        # ))
+        print("Response from server : ")
+        print(json.dumps(
+            self.raw_response,
+            sort_keys=True,
+            indent=4,
+            separators=(',', ': ')
+        ))
 
         self.grading_status = _submission_object["grading_status_cd"]
         self.score = _submission_object["score"]
