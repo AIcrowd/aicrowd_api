@@ -23,12 +23,12 @@ except Exception as e:
 def test_works_for_correct_submission_id():
     """Correct submission id returns a valid submission object"""
     api = AICROWD_API(AUTH_TOKEN)
-    challenge_id = "IEEEInvestmentRankingChallenge"
-    submission_id = 5030
+    challenge_id = "test_challenge"
+    submission_id = 6021
     submission = api.get_submission(challenge_id, submission_id)
-    assert submission.id == 5030
-    assert submission.score == 0.001587
-    assert submission.score_secondary == 0.00608137471612
+    assert submission.id == submission_id
+    assert submission.score == 10.1368634197571
+    assert submission.score_secondary == 20.4264298439026
     assert submission.grading_status == "graded"
     print(submission)
 
@@ -36,7 +36,7 @@ def test_works_for_correct_submission_id():
 def test_does_not_work_for_correct_submission_id():
     """Incorrect submission id throws an Exception"""
     api = AICROWD_API(AUTH_TOKEN)
-    challenge_id = "IEEEInvestmentRankingChallenge"
-    submission_id = 50300000000001
+    challenge_id = "test_challenge"
+    submission_id = 99999999999999
     with pytest.raises(AIcrowdRemoteException):
         api.get_submission(challenge_id, submission_id)
