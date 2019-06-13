@@ -14,7 +14,7 @@ else:
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger(__name__, )
 
-class AICrowdAIEven:
+class AIcrowdEvents:
     AICROWD_EVENT_INFO="AICROWD_EVENT_INFO"
     AICROWD_EVENT_ERROR="AICROWD_EVENT_ERROR"
     AICROWD_EVENT_SUCCESS="AICROWD_EVENT_SUCCESS"
