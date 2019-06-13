@@ -7,46 +7,46 @@ import json
 import atexit
 import time
 
-CROWDAI_DEBUG_MODE = os.getenv("CROWDAI_DEBUG_MODE", False)
-if CROWDAI_DEBUG_MODE:
+AICROWD_DEBUG_MODE = os.getenv("AICROWD_DEBUG_MODE", False)
+if AICROWD_DEBUG_MODE:
     logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 else:
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger(__name__, )
 
-class CrowdAIEvents:
-    CROWDAI_EVENT_INFO="CROWDAI_EVENT_INFO"
-    CROWDAI_EVENT_ERROR="CROWDAI_EVENT_ERROR"
-    CROWDAI_EVENT_SUCCESS="CROWDAI_EVENT_SUCCESS"
-    CROWDAI_EVENT_CODE_EXIT="CROWDAI_EVENT_CODE_EXIT"
+class AICrowdAIEven:
+    AICROWD_EVENT_INFO="AICROWD_EVENT_INFO"
+    AICROWD_EVENT_ERROR="AICROWD_EVENT_ERROR"
+    AICROWD_EVENT_SUCCESS="AICROWD_EVENT_SUCCESS"
+    AICROWD_EVENT_CODE_EXIT="AICROWD_EVENT_CODE_EXIT"
 
     def __init__(self, with_oracle=False):
-        self.IS_GRADING = os.getenv("CROWDAI_IS_GRADING", False)
+        self.IS_GRADING = os.getenv("AICROWD_IS_GRADING", False)
         self.is_bootstrapped = False
         self.with_oracle = with_oracle #Marks if the communication is happenning with the oracle
 
         if self.IS_GRADING:
-            self.AGENT_ID = os.getenv("CROWDAI_AGENT_ID", "undefined")
-            self.REDIS_HOST = os.getenv("CROWDAI_REDIS_HOST", "localhost")
-            self.REDIS_PORT = os.getenv("CROWDAI_REDIS_PORT", "6379")
-            self.REDIS_DB = os.getenv("CROWDAI_REDIS_DB", 0)
-            self.REDIS_PASSWORD = os.getenv("CROWDAI_REDIS_PASSWORD", None)
+            self.AGENT_ID = os.getenv("AICROWD_AGENT_", "undefined")
+            self.REDIS_HOST = os.getenv("AICROWD_REDIS_HO", "localhost")
+            self.REDIS_PORT = os.getenv("AICROWD_REDIS_PO", "6379")
+            self.REDIS_DB = os.getenv("AICROWD_REDIS_", 0)
+            self.REDIS_PASSWORD = os.getenv("AICROWD_REDIS_PASSWO", None)
             self.REDIS_SOCKET_TIMEOUT = float(os.getenv("REDIS_SOCKET_TIMEOUT", 60))
             self.REDIS_SOCKET_CONNECT_TIMEOUT = float(os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60))
             self.REDIS_CALL_SLEEP_TIME = float(os.getenv("REDIS_CALL_SLEEP_TIME", 1))
 
             self.REDIS_COMMUNICATION_CHANNEL = \
-                os.getenv(  "CROWDAI_REDIS_COMMUNICATION_CHANNEL",
-                            "CROWDAI_REDIS_COMMUNICATION_CHANNEL"
+                os.getenv(  "AICROWD_REDIS_COMMUNICATION_CHANN",
+                            "AICROWD_REDIS_COMMUNICATION_CHANN"
                         )
             self.ORACLE_COMMUNICATION_CHANNEL = \
-                os.getenv(  "CROWDAI_ORACLE_COMMUNICATION_CHANNEL",
-                            "CROWDAI_ORACLE_COMMUNICATION_CHANNEL"
+                os.getenv(  "AICROWD_ORACLE_COMMUNICATION_CHANN",
+                            "AICROWD_ORACLE_COMMUNICATION_CHANN"
                         )
 
             self.BLOCKING_RESPONSE_CHANNEL = \
-                os.getenv(  "CROWDAI_BLOCKING_RESPONSE_CHANNEL",
-                            "CROWDAI_BLOCKING_RESPONSE_CHANNEL"
+                os.getenv(  "AICROWD_BLOCKING_RESPONSE_CHANN",
+                            "AICROWD_BLOCKING_RESPONSE_CHANN"
                         )
 
             self.REDIS_POOL = redis.ConnectionPool(
@@ -88,7 +88,7 @@ class CrowdAIEvents:
                         continue
 
     def get_event(self):
-        logger.debug("Attempting to GET crowdAI API Event ")
+        logger.debug("Attempting to GET AIcrowd API Event ")
         self.bootstrap()
         if self.IS_GRADING:
             r = redis.Redis(connection_pool=self.REDIS_POOL,
@@ -107,7 +107,7 @@ class CrowdAIEvents:
                 params = r.brpop(communication_channel)
                 if params:
                     channel, data = params
-                    logger.debug("Received crowdAI API Event {}".format(data))
+                    logger.debug("Received AIcrowd API Event {}".format(data))
                     if type(data) == bytes:
                         data = data.decode('utf-8')
                     return json.loads(data)
@@ -115,7 +115,7 @@ class CrowdAIEvents:
                     time.sleep(self.REDIS_CALL_SLEEP_TIME)
                     continue
         else:
-            raise Exception("Attempting to GET event when CROWDAI_IS_GRADING is False")
+            raise Exception("Attempting to GET event when AICROWD_IS_GRADING is False")
 
     def send_blocking_call_response(self, response):
         response = json.dumps(response)
@@ -126,7 +126,7 @@ class CrowdAIEvents:
         r.lpush(self.BLOCKING_RESPONSE_CHANNEL, response)
 
     def register_event(self, event_type, message="", payload={}, blocking=False):
-        logger.debug("Registering crowdAI API Event : {} {} {} # with_oracle? : {}".format(
+        logger.debug("Registering AIcrowd API Event : {} {} {} # with_oracle? : {}".format(
             event_type, message, payload, self.with_oracle
         ))
         self.bootstrap()

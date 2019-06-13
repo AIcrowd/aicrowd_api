@@ -1,14 +1,14 @@
 import json
 from .helpers import make_api_call
-from .exceptions import CrowdAIAPIException, CrowdAIRemoteException
+from .exceptions import AIcrowdAPIException, AIcrowdRemoteException
 
-class CrowdAISubmission:
+class AIcrowdSubmission:
     """Base Submission Class
 
-        :param submission_id: crowdai submission_id
-        :param grading_status: crowdai grading status. Can be one of -
+        :param submission_id: aicrowd submission_id
+        :param grading_status: aicrowd grading status. Can be one of -
                              ['submitted', 'initiated', 'graded', 'failed']
-        :param message: crowdai grading message
+        :param message: aicrowd grading message
         :param meta: meta key holding extra params related to the grading
     """
     def __init__(self,
@@ -52,10 +52,10 @@ class CrowdAISubmission:
         _object = {}
 
         if self.challenge_id is False:
-            raise CrowdAIAPIException("Submission _serialize called without initialising challenge_id")
+            raise AIcrowdAPIException("Submission _serialize called without initialising challenge_id")
 
         if self.api_key is False:
-            raise CrowdAIAPIException("Submission _serialize called without initialising participant api_key")
+            raise AIcrowdAPIException("Submission _serialize called without initialising participant api_key")
 
         _object["challenge_client_name"] = self.challenge_id
         if self.round_id:
@@ -64,14 +64,14 @@ class CrowdAISubmission:
         if self.score is not False:
             _object["score"] = self.score
             if self.score_secondary is False:
-                raise CrowdAIAPIException("Score Secondary is null. \
+                raise AIcrowdAPIException("Score Secondary is null. \
 The currrent API expects a token value for score secondary when score is set.")
             else:
                 _object["score_secondary"] = self.score_secondary
 
         if self.grading_status not in ['submitted', 'initiated',
                                        'graded', 'failed']:
-            raise CrowdAIAPIException("Submission _serialize called \
+            raise AIcrowdAPIException("Submission _serialize called \
             with invalid grading status : {}".format(self.grading_status))
 
         _object["grading_status"] = self.grading_status
@@ -117,7 +117,7 @@ The currrent API expects a token value for score secondary when score is set.")
             submission_id = response_body["submission_id"]
             self.id = submission_id
         else:
-            raise CrowdAIRemoteException(response_body["message"])
+            raise AIcrowdRemoteException(response_body["message"])
 
     def update(self, meta_overwrite=True):
         """Update the current submission object on the server
@@ -132,7 +132,7 @@ The currrent API expects a token value for score secondary when score is set.")
             # Everything went well. Do nothing
             pass
         else:
-            raise CrowdAIRemoteException(response_body["message"])
+            raise AIcrowdRemoteException(response_body["message"])
 
     def sync_with_server(self):
         """
@@ -140,7 +140,7 @@ The currrent API expects a token value for score secondary when score is set.")
         and updates the relevant fields.
         """
         if self.id is False or self.challenge_id is False:
-            raise CrowdAIAPIException("submission_id and challenge_id has \
+            raise AIcrowdAPIException("submission_id and challenge_id has \
             to be initialized before a sync_with_server operation \
             can complete.")
 
@@ -148,7 +148,7 @@ The currrent API expects a token value for score secondary when score is set.")
                                 self.id)
         response = make_api_call(self.auth_token, "get", url)
         if response.status_code is not 200:
-            raise CrowdAIRemoteException("Invalid submission id")
+            raise AIcrowdRemoteException("Invalid submission id")
         _submission_object = json.loads(response.text)
         self.raw_response = _submission_object
         print("Response from server : ")
@@ -191,7 +191,7 @@ The currrent API expects a token value for score secondary when score is set.")
 
         string = ""
         string += "="*40 + "\n"
-        string += _template("CrowdAISubmission",
+        string += _template("AIcrowdSubmission",
                             self.id, tabfirst=False)
         string += _template("challenge_id", self.challenge_id)
         string += _template("round_id", self.round_id)

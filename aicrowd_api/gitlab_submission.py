@@ -8,7 +8,7 @@ class GitlabSubmission:
                  project_id,
                  submission_id,
                  challenge_slug,
-                 gitlab_url="http://gitlab.crowdai.org"
+                 gitlab_url="http://gitlab.aicrowd.com"
                 ):
         self.gitlab_auth_token = gitlab_auth_token
         self.project_id = project_id

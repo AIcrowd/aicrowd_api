@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from .helpers import make_api_call
-from .submission import CrowdAISubmission
-from .exceptions import CrowdAIAPIException, CrowdAIRemoteException
+from .submission import AIcrowdSubmission
+from .exceptions import AIcrowdAPIException, AIcrowdRemoteException
 import json
 
 __docformat__ = 'reStructuredText'
@@ -12,9 +12,9 @@ __author__ = 'S.P. Mohanty'
 class API:
     """Base API class
 
-    :param auth_token: Authentication Token from crowdAI
+    :param auth_token: Authentication Token from AIcrowd
     :param base_url: Grader URL for API calls.
-           Default value : https://www.crowdai.org/api/external_graders/
+           Default value : https://www.aicrowd.com/api
     """
     def __init__(self,
                  auth_token,
@@ -27,7 +27,7 @@ class API:
         self.participant_id = False
 
     def authenticate_participant_with_username(self, username):
-        """Returns the API key of a participant given a crowdai username
+        """Returns the API key of a participant given a AIcrowd username
         :Example:
 
         >>> api = API(auth_token)
@@ -41,7 +41,7 @@ class API:
             self.participant_api_key = response_body["api_key"]
         else:
             message = response_body["message"]
-            raise CrowdAIRemoteException(message)
+            raise AIcrowdRemoteException(message)
         self.authenticate_participant(self.participant_api_key)
 
     def authenticate_participant(self, api_key):
@@ -68,7 +68,7 @@ class API:
             self.participant_id = participant_id
         else:
             message = response_body["message"]
-            raise CrowdAIRemoteException(message)
+            raise AIcrowdRemoteException(message)
 
     def get_all_submissions(self, challenge_id, grading_status="graded"):
         """Returns all submissions for a particular challenge id
@@ -100,10 +100,10 @@ class API:
             return submission_ids
         else:
             message = response_body["message"]
-            raise CrowdAIRemoteException(message)
+            raise AIcrowdRemoteException(message)
 
     def get_submission(self, challenge_id, submission_id):
-        submission = CrowdAISubmission(base_url=self.base_url)
+        submission = AIcrowdSubmission(base_url=self.base_url)
         submission.api_key = self.participant_api_key
         submission.base_url = self.base_url
         submission.auth_token = self.auth_token
@@ -113,7 +113,7 @@ class API:
         return submission
 
     def create_submission(self, challenge_id, round_id=False):
-        submission = CrowdAISubmission(base_url=self.base_url)
+        submission = AIcrowdSubmission(base_url=self.base_url)
         submission.api_key = self.participant_api_key
         submission.base_url = self.base_url
         submission.auth_token = self.auth_token

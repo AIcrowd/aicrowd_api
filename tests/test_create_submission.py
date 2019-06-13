@@ -6,8 +6,8 @@
 import os
 import pytest
 
-from crowdai_api import API as CROWDAI_API
-from crowdai_api import CrowdAIRemoteException, CrowdAIAPIException
+from aicrowd_api import API as AICROWD_API
+from aicrowd_api import AIcrowdRemoteException, AIcrowdAPIException
 
 EXPECTED_KEYS = ['AUTH_TOKEN', 'EXAMPLE_API_KEY']
 try:
@@ -23,7 +23,7 @@ except Exception as e:
 def test_successfully_creates_submission_with_correct_api_key():
     """Tests if Successfully creates submission for correct api_key \
     and correct_challenge_id"""
-    api = CROWDAI_API(AUTH_TOKEN)
+    api = AICROWD_API(AUTH_TOKEN)
     challenge_id = "test_challenge"
     api.authenticate_participant(EXAMPLE_API_KEY)
     submission = api.create_submission(challenge_id)
@@ -35,17 +35,17 @@ def test_successfully_creates_submission_with_correct_api_key():
 
 def test_throws_error_when_not_authenticated():
     """Tests if throws error when creating submission without authentication"""
-    api = CROWDAI_API(AUTH_TOKEN)
+    api = AICROWD_API(AUTH_TOKEN)
     challenge_id = "test_challenge"
-    with pytest.raises(CrowdAIAPIException):
+    with pytest.raises(AIcrowdAPIException):
         api.create_submission(challenge_id)
 
 
 def test_throws_error_when_wrong_challenge_id():
     """Tests if throws error when creating submission with \
     wrong challenge id"""
-    api = CROWDAI_API(AUTH_TOKEN)
+    api = AICROWD_API(AUTH_TOKEN)
     api.authenticate_participant(EXAMPLE_API_KEY)
     challenge_id = "wrong_challenge_id"
-    with pytest.raises(CrowdAIRemoteException):
+    with pytest.raises(AIcrowdRemoteException):
         api.create_submission(challenge_id)

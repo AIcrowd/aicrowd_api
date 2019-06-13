@@ -1,29 +1,31 @@
-# crowdAI API
-![build status](https://api.travis-ci.org/crowdAI/crowdai_api.svg?branch=master)   
+# AIcrowd API
+![build status](https://api.travis-ci.org/AIcrowd/aicrowd_api.svg?branch=master)
 
-python client for server side API of the [crowdai.org](https://www.crowdai.org) webapp.
+Python client for server side API of the [aicrowd.com](https://www.aicrowd.com) webapp.
 
 * Free software: GNU General Public License v3
-* Documentation: https://crowdai-api.readthedocs.io.
+* Documentation: https://aicrowd-api.readthedocs.io.
 
 # Installation
 ## Deployment
 ```bash
-pip install git+https://github.com/crowdAI/crowdai_api.git
+pip install git+https://github.com/AIcrowd/aicrowd_api.git
 ```
+
 ## Development
 ```bash
-git clone https://github.com/crowdAI/crowdai_api
-cd crowdai_api
+git clone https://github.com/AIcrowd/aicrowd_api
+cd aicrowd_api
 pip install -r requirements_dev.txt
 pip install -e .
 ```
+
 # Usage
 ## Instantiate API object
 ```python
-from crowdai_api import API as CROWDAI_API
+from aicrowd_api import API as AICROWD_API
 auth_token="<YOUR CROWDAI AUTH TOKEN>"
-api = CROWDAI_API(auth_token)
+api = AICROWD_API(auth_token)
 ```
 
 ## Authenticate participant
@@ -31,10 +33,12 @@ api = CROWDAI_API(auth_token)
 ```python
 api.authenticate_participant(EXAMPLE_API_KEY)
 ```
+
 * with `username`
 ```python
 api_key = api.authenticate_participant_with_username("spMohanty")
 ```
+
 ## Get all Submissions
 ```python
 
@@ -42,14 +46,16 @@ challenge_id = "test_challenge"
 submissions = api.get_all_submissions(challenge_id)
 print(submissions)
 ```
+
 ## Create Submission
 ```python
 challenge_id = "test_challenge"
 submission = api.create_submission(challenge_id)
 print(submission)
+
 # Output
 # ========================================
-# CrowdAISubmission	:	5261
+# AIcrowdSubmission	:	5261
 # 	challenge_id	:	test_challenge
 # 	round_id	:	False
 # 	score	:	False
@@ -61,8 +67,8 @@ print(submission)
 
 ## Get submission
 ```python
-submission_id = 5262
 challenge_id = "test_challenge"
+submission_id = 5262
 submission = api.get_submission(challenge_id, submission_id)
 ```
 
@@ -99,4 +105,5 @@ pytests tests/
 ```
 
 # Author
-S.P.Mohanty <sharada.mohanty@epfl.ch>
+S.P.Mohanty <mohanty@aicrowd.com>
+Arjun Nemani <nemani@aicrowd.com>
