@@ -1,5 +1,5 @@
 # AIcrowd API
-![build status](https://api.travis-ci.org/AIcrowd/aicrowd_api.svg?branch=master)
+[![Build Status](https://travis-ci.com/AIcrowd/aicrowd_api.svg?token=thqphyYGsxAAMBx7geLi&branch=master)](https://travis-ci.com/AIcrowd/aicrowd_api)
 
 Python client for server side API of the [aicrowd.com](https://www.aicrowd.com) webapp.
 
