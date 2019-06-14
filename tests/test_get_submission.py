@@ -37,6 +37,6 @@ def test_does_not_work_for_correct_submission_id():
     """Incorrect submission id throws an Exception"""
     api = AICROWD_API(AUTH_TOKEN)
     challenge_id = "test_challenge"
-    submission_id = 99999999999999
+    submission_id = 9999999999
     with pytest.raises(AIcrowdRemoteException):
         api.get_submission(challenge_id, submission_id)
