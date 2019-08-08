@@ -8,7 +8,7 @@ from setuptools import setup, find_packages
 with open('README.md') as readme_file:
     readme = readme_file.read()
 
-requirements = ['requests>=2.18.4', 'python-gitlab>=1.3.0', 'redis']
+requirements = ['requests>=2.18.4', 'redis']
 
 setup_requirements = ['pytest-runner', ]
 
@@ -35,6 +35,7 @@ setup(
     install_requires=requirements,
     license="GNU General Public License v3",
     long_description=readme,
+    long_description_content_type="text/markdown",
     include_package_data=True,
     keywords='aicrowd_api aicrowd crowdai_api crowdai',
     name='aicrowd_api',
@@ -43,6 +44,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/AIcrowd/aicrowd_api',
-    version='0.1.21',
+    version='0.1.22',
     zip_safe=False,
 )

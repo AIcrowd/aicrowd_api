@@ -8,6 +8,5 @@ __version__ = '0.1.9'
 
 from .aicrowd_api import API
 from .submission import AIcrowdSubmission
-from .gitlab_submission import GitlabSubmission
 from .events import AIcrowdEvents
 from .exceptions import *
