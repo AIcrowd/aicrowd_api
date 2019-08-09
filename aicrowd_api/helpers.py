@@ -20,7 +20,7 @@ def make_api_call(auth_token, request_type, url, payload={}, debug=False):
 
     assert request_type in ['get', 'post', 'patch']
     headers = {
-        'Authorization': 'Token token='+auth_token,
+        'Authorization': 'Token token=' + auth_token,
         "Content-Type": "application/vnd.api+json"
     }
     function = {}

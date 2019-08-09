@@ -15,8 +15,8 @@ try:
     EXAMPLE_API_KEY = os.environ["EXAMPLE_API_KEY"]
 except Exception as e:
     raise Exception("Environment variables do not seem to be set. "
-                    + "Please set the following env variables : "
-                    + ",".join(EXPECTED_KEYS)
+                    "Please set the following env variables : "
+                    "" + (",".join(EXPECTED_KEYS))
                     )
 
 

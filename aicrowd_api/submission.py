@@ -193,7 +193,7 @@ The currrent API expects a token value for score secondary when score is set.")
             return response
 
         string = ""
-        string += "="*40 + "\n"
+        string += "=" * 40 + "\n"
         string += _template("AIcrowdSubmission",
                             self.id, tabfirst=False)
         string += _template("challenge_id", self.challenge_id)
@@ -210,7 +210,7 @@ The currrent API expects a token value for score secondary when score is set.")
                                     indent=4,
                                     separators=(',', ': ')
                                 ))
-        string += "="*40 + "\n"
+        string += "=" * 40 + "\n"
         return string
 
     def __str__(self):
