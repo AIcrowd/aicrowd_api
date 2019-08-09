@@ -41,6 +41,7 @@ def test_updates_submission():
     assert submission_from_server.score_secondary == 0.99
     assert submission_from_server.grading_status == "graded"
 
+
 def test_updates_submission_with_meta():
     """Tests is it successfully updates submission with the meta param"""
     api = AICROWD_API(AUTH_TOKEN)
@@ -80,10 +81,10 @@ def test_updates_submission_with_meta():
     assert submission_from_server.meta["something"] == "A_1"
     assert submission_from_server.meta["something_else"] == "B_1"
 
-## This test fails right in the first block where the submission object on a new
+# This test fails right in the first block where the submission object on a new
 # create submission mysteriously has the meta param assigned from the previous test
 # This needs further investigation
-# 
+#
 # def test_updates_submission_with_meta_with_metaoverwrite_forced_False():
 #     """ Tests is it successfully updates submission with the
 #         meta_overwrite param = False

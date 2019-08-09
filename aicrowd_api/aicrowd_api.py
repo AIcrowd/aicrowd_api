@@ -9,6 +9,7 @@ __author__ = 'S.P. Mohanty'
 
 """Main module."""
 
+
 class API:
     """Base API class
 
@@ -16,6 +17,7 @@ class API:
     :param base_url: Grader URL for API calls.
            Default value : https://www.aicrowd.com/api
     """
+
     def __init__(self,
                  auth_token,
                  base_url="https://www.aicrowd.com/api",
@@ -87,7 +89,8 @@ class API:
 
         TODO: Write Tests for this call
         """
-        assert grading_status in ['submitted', 'initiated', 'graded', 'failed', '*']
+        assert grading_status in ['submitted',
+                                  'initiated', 'graded', 'failed', '*']
         url = "{}/{}".format(self.base_url, "submissions")
         payload = {}
         payload["challenge_client_name"] = challenge_id

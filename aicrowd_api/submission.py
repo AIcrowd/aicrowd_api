@@ -2,6 +2,7 @@ import json
 from .helpers import make_api_call
 from .exceptions import AIcrowdAPIException, AIcrowdRemoteException
 
+
 class AIcrowdSubmission:
     """Base Submission Class
 
@@ -11,6 +12,7 @@ class AIcrowdSubmission:
         :param message: aicrowd grading message
         :param meta: meta key holding extra params related to the grading
     """
+
     def __init__(self,
                  score=False,
                  score_secondary=False,
@@ -52,10 +54,12 @@ class AIcrowdSubmission:
         _object = {}
 
         if self.challenge_id is False:
-            raise AIcrowdAPIException("Submission _serialize called without initialising challenge_id")
+            raise AIcrowdAPIException(
+                "Submission _serialize called without initialising challenge_id")
 
         if self.api_key is False:
-            raise AIcrowdAPIException("Submission _serialize called without initialising participant api_key")
+            raise AIcrowdAPIException(
+                "Submission _serialize called without initialising participant api_key")
 
         _object["challenge_client_name"] = self.challenge_id
         if self.round_id:
@@ -85,7 +89,7 @@ The currrent API expects a token value for score secondary when score is set.")
             _object["media_large"] = self.youtube_key
             _object["media_thumbnail"] = self.youtube_key
             _object["media_content_type"] = "video/youtube"
-        
+
         if self.video_keys:
             assert type(self.video_keys) == dict
             assert "media_large" in self.video_keys.keys()
@@ -98,7 +102,7 @@ The currrent API expects a token value for score secondary when score is set.")
             _object["media_large"] = self.image_key
             _object["media_thumbnail"] = self.image_key
             _object["media_content_type"] = "image/png"
-        
+
         if len(self.meta.keys()) > 0:
             # Serialize JSON in a POST friendly way
             for _key in self.meta.keys():
@@ -166,7 +170,6 @@ The currrent API expects a token value for score secondary when score is set.")
         if "description_markdown" in _submission_object.keys():
             self.long_description = _submission_object["description_markdown"]
 
-
         if "meta" in _submission_object.keys():
             if type(_submission_object["meta"]) == dict:
                 self.meta = _submission_object["meta"]
@@ -178,8 +181,8 @@ The currrent API expects a token value for score secondary when score is set.")
                         "Received invalid meta key : {}, silently ignoring..."
                         .format(
                             _submission_object["meta"]
-                            )
                         )
+                    )
 
     def __repr__(self):
         def _template(key, value, tabfirst=True):

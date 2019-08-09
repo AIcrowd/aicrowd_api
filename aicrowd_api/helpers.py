@@ -1,4 +1,6 @@
 import requests
+
+
 def make_api_call(auth_token, request_type, url, payload={}, debug=False):
     if debug:
         import logging
@@ -20,16 +22,16 @@ def make_api_call(auth_token, request_type, url, payload={}, debug=False):
     headers = {
         'Authorization': 'Token token='+auth_token,
         "Content-Type": "application/vnd.api+json"
-        }
+    }
     function = {}
     function["get"] = requests.get
     function["post"] = requests.post
     function["patch"] = requests.patch
 
     r = function[request_type](
-                              url,
-                              params=payload,
-                              headers=headers,
-                              verify=True
-                              )
+        url,
+        params=payload,
+        headers=headers,
+        verify=True
+    )
     return r

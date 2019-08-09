@@ -14,16 +14,18 @@ else:
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logger = logging.getLogger(__name__, )
 
+
 class AIcrowdEvents:
-    AICROWD_EVENT_INFO="AICROWD_EVENT_INFO"
-    AICROWD_EVENT_ERROR="AICROWD_EVENT_ERROR"
-    AICROWD_EVENT_SUCCESS="AICROWD_EVENT_SUCCESS"
-    AICROWD_EVENT_CODE_EXIT="AICROWD_EVENT_CODE_EXIT"
+    AICROWD_EVENT_INFO = "AICROWD_EVENT_INFO"
+    AICROWD_EVENT_ERROR = "AICROWD_EVENT_ERROR"
+    AICROWD_EVENT_SUCCESS = "AICROWD_EVENT_SUCCESS"
+    AICROWD_EVENT_CODE_EXIT = "AICROWD_EVENT_CODE_EXIT"
 
     def __init__(self, with_oracle=False):
         self.IS_GRADING = os.getenv("AICROWD_IS_GRADING", False)
         self.is_bootstrapped = False
-        self.with_oracle = with_oracle #Marks if the communication is happenning with the oracle
+        # Marks if the communication is happenning with the oracle
+        self.with_oracle = with_oracle
 
         if self.IS_GRADING:
             self.AGENT_ID = os.getenv("AICROWD_AGENT_ID", "undefined")
@@ -31,30 +33,33 @@ class AIcrowdEvents:
             self.REDIS_PORT = os.getenv("AICROWD_REDIS_PORT", "6379")
             self.REDIS_DB = os.getenv("AICROWD_REDIS_DB", 0)
             self.REDIS_PASSWORD = os.getenv("AICROWD_REDIS_PASSWORD", None)
-            self.REDIS_SOCKET_TIMEOUT = float(os.getenv("REDIS_SOCKET_TIMEOUT", 60))
-            self.REDIS_SOCKET_CONNECT_TIMEOUT = float(os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60))
-            self.REDIS_CALL_SLEEP_TIME = float(os.getenv("REDIS_CALL_SLEEP_TIME", 1))
+            self.REDIS_SOCKET_TIMEOUT = float(
+                os.getenv("REDIS_SOCKET_TIMEOUT", 60))
+            self.REDIS_SOCKET_CONNECT_TIMEOUT = float(
+                os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60))
+            self.REDIS_CALL_SLEEP_TIME = float(
+                os.getenv("REDIS_CALL_SLEEP_TIME", 1))
 
             self.REDIS_COMMUNICATION_CHANNEL = \
-                os.getenv(  "AICROWD_REDIS_COMMUNICATION_CHANNEL",
-                            "AICROWD_REDIS_COMMUNICATION_CHANNEL"
-                        )
+                os.getenv("AICROWD_REDIS_COMMUNICATION_CHANNEL",
+                          "AICROWD_REDIS_COMMUNICATION_CHANNEL"
+                          )
             self.ORACLE_COMMUNICATION_CHANNEL = \
-                os.getenv(  "AICROWD_ORACLE_COMMUNICATION_CHANNEL",
-                            "AICROWD_ORACLE_COMMUNICATION_CHANNEL"
-                        )
+                os.getenv("AICROWD_ORACLE_COMMUNICATION_CHANNEL",
+                          "AICROWD_ORACLE_COMMUNICATION_CHANNEL"
+                          )
 
             self.BLOCKING_RESPONSE_CHANNEL = \
-                os.getenv(  "AICROWD_BLOCKING_RESPONSE_CHANNEL",
-                            "AICROWD_BLOCKING_RESPONSE_CHANNEL"
-                        )
+                os.getenv("AICROWD_BLOCKING_RESPONSE_CHANNEL",
+                          "AICROWD_BLOCKING_RESPONSE_CHANNEL"
+                          )
 
             self.REDIS_POOL = redis.ConnectionPool(
-                                host=self.REDIS_HOST,
-                                port=self.REDIS_PORT,
-                                db=self.REDIS_DB,
-                                password=self.REDIS_PASSWORD
-                                )
+                host=self.REDIS_HOST,
+                port=self.REDIS_PORT,
+                db=self.REDIS_DB,
+                password=self.REDIS_PASSWORD
+            )
             # TODO: Add tests
 
     def __iter__(self):
@@ -80,7 +85,8 @@ class AIcrowdEvents:
                                         socket_timeout=self.REDIS_SOCKET_TIMEOUT,
                                         socket_connect_timeout=self.REDIS_SOCKET_CONNECT_TIMEOUT)
                         r.keys()
-                        logger.debug("Established connection with redis server...")
+                        logger.debug(
+                            "Established connection with redis server...")
                         self.is_bootstrapped = True
                         break
                     except redis.exceptions.ConnectionError:
@@ -115,7 +121,8 @@ class AIcrowdEvents:
                     time.sleep(self.REDIS_CALL_SLEEP_TIME)
                     continue
         else:
-            raise Exception("Attempting to GET event when AICROWD_IS_GRADING is False")
+            raise Exception(
+                "Attempting to GET event when AICROWD_IS_GRADING is False")
 
     def send_blocking_call_response(self, response):
         response = json.dumps(response)
