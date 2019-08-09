@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use crowdAI API in a project::
+To use AIcrowd API in a project::
 
-    import crowdai_api
+    import aicrowd_api

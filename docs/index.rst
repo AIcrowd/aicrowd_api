@@ -1,4 +1,4 @@
-Welcome to crowdAI API's documentation!
+Welcome to AIcrowd API's documentation!
 ======================================
 
 .. toctree::

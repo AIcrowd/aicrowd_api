@@ -24,7 +24,7 @@ pip install -e .
 ## Instantiate API object
 ```python
 from aicrowd_api import API as AICROWD_API
-auth_token="<YOUR CROWDAI AUTH TOKEN>"
+auth_token="<YOUR AICROWD AUTH TOKEN>"
 api = AICROWD_API(auth_token)
 ```
 
@@ -85,7 +85,7 @@ submission.update()
 print(submission)
 # Output#
 # ========================================
-# CrowdAISubmission	:	5262
+# AIcrowdSubmission	:	5262
 # 	challenge_id	:	test_challenge
 # 	round_id	:	False
 # 	score	:	0.98

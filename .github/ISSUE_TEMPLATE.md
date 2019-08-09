@@ -1,4 +1,4 @@
-* crowdAI API version:
+* AIcrowd API version:
 * Python version:
 * Operating System:
 

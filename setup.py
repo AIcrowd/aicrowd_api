@@ -16,7 +16,7 @@ test_requirements = ['pytest', ]
 
 setup(
     author="S.P. Mohanty",
-    author_email='spmohanty91@gmail.com',
+    author_email='mohanty@aicrowd.com',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -44,6 +44,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/AIcrowd/aicrowd_api',
-    version='0.1.22',
+    version='0.1.23',
     zip_safe=False,
 )

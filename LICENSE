@@ -1,7 +1,7 @@
 GNU GENERAL PUBLIC LICENSE
                       Version 3, 29 June 2007
 
-    python api for interacting with server side api of crowdai.org webapp
+    python api for interacting with server side api of aicrowd.com webapp
     Copyright (C) 2018  S.P. Mohanty
 
     This program is free software: you can redistribute it and/or modify

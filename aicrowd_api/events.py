@@ -26,27 +26,27 @@ class AIcrowdEvents:
         self.with_oracle = with_oracle #Marks if the communication is happenning with the oracle
 
         if self.IS_GRADING:
-            self.AGENT_ID = os.getenv("AICROWD_AGENT_", "undefined")
-            self.REDIS_HOST = os.getenv("AICROWD_REDIS_HO", "localhost")
-            self.REDIS_PORT = os.getenv("AICROWD_REDIS_PO", "6379")
-            self.REDIS_DB = os.getenv("AICROWD_REDIS_", 0)
-            self.REDIS_PASSWORD = os.getenv("AICROWD_REDIS_PASSWO", None)
+            self.AGENT_ID = os.getenv("AICROWD_AGENT_ID", "undefined")
+            self.REDIS_HOST = os.getenv("AICROWD_REDIS_HOST", "localhost")
+            self.REDIS_PORT = os.getenv("AICROWD_REDIS_PORT", "6379")
+            self.REDIS_DB = os.getenv("AICROWD_REDIS_DB", 0)
+            self.REDIS_PASSWORD = os.getenv("AICROWD_REDIS_PASSWORD", None)
             self.REDIS_SOCKET_TIMEOUT = float(os.getenv("REDIS_SOCKET_TIMEOUT", 60))
             self.REDIS_SOCKET_CONNECT_TIMEOUT = float(os.getenv("REDIS_SOCKET_CONNECT_TIMEOUT", 60))
             self.REDIS_CALL_SLEEP_TIME = float(os.getenv("REDIS_CALL_SLEEP_TIME", 1))
 
             self.REDIS_COMMUNICATION_CHANNEL = \
-                os.getenv(  "AICROWD_REDIS_COMMUNICATION_CHANN",
-                            "AICROWD_REDIS_COMMUNICATION_CHANN"
+                os.getenv(  "AICROWD_REDIS_COMMUNICATION_CHANNEL",
+                            "AICROWD_REDIS_COMMUNICATION_CHANNEL"
                         )
             self.ORACLE_COMMUNICATION_CHANNEL = \
-                os.getenv(  "AICROWD_ORACLE_COMMUNICATION_CHANN",
-                            "AICROWD_ORACLE_COMMUNICATION_CHANN"
+                os.getenv(  "AICROWD_ORACLE_COMMUNICATION_CHANNEL",
+                            "AICROWD_ORACLE_COMMUNICATION_CHANNEL"
                         )
 
             self.BLOCKING_RESPONSE_CHANNEL = \
-                os.getenv(  "AICROWD_BLOCKING_RESPONSE_CHANN",
-                            "AICROWD_BLOCKING_RESPONSE_CHANN"
+                os.getenv(  "AICROWD_BLOCKING_RESPONSE_CHANNEL",
+                            "AICROWD_BLOCKING_RESPONSE_CHANNEL"
                         )
 
             self.REDIS_POOL = redis.ConnectionPool(
