@@ -42,21 +42,21 @@ api_key = api.authenticate_participant_with_username("spMohanty")
 ## Get all Submissions
 ```python
 
-challenge_id = "test_challenge"
-submissions = api.get_all_submissions(challenge_id)
+challenge_client_name = "test_challenge"
+submissions = api.get_all_submissions(challenge_client_name)
 print(submissions)
 ```
 
 ## Create Submission
 ```python
-challenge_id = "test_challenge"
-submission = api.create_submission(challenge_id)
+challenge_client_name = "test_challenge"
+submission = api.create_submission(challenge_client_name)
 print(submission)
 
 # Output
 # ========================================
 # AIcrowdSubmission	:	5261
-# 	challenge_id	:	test_challenge
+# 	challenge_client_name	:	test_challenge
 # 	round_id	:	False
 # 	score	:	False
 # 	score_secondary	:	False
@@ -67,9 +67,9 @@ print(submission)
 
 ## Get submission
 ```python
-challenge_id = "test_challenge"
+challenge_client_name = "test_challenge"
 submission_id = 5262
-submission = api.get_submission(challenge_id, submission_id)
+submission = api.get_submission(challenge_client_name, submission_id)
 ```
 
 ## Update submission
@@ -86,7 +86,7 @@ print(submission)
 # Output#
 # ========================================
 # AIcrowdSubmission	:	5262
-# 	challenge_id	:	test_challenge
+# 	challenge_client_name	:	test_challenge
 # 	round_id	:	False
 # 	score	:	0.98
 # 	score_secondary	:	0.98
