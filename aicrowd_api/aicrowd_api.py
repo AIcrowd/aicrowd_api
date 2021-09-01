@@ -115,13 +115,14 @@ class API:
         submission.sync_with_server()
         return submission
 
-    def create_submission(self, challenge_id, round_id=False):
+    def create_submission(self, challenge_id, round_id=False, debug_submission=False):
         submission = AIcrowdSubmission(base_url=self.base_url)
         submission.api_key = self.participant_api_key
         submission.base_url = self.base_url
         submission.auth_token = self.auth_token
         submission.challenge_id = challenge_id
         submission.round_id = round_id
+        submission.debug_submission = debug_submission
 
         submission.create_on_server()
         return submission

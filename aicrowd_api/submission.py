@@ -27,6 +27,7 @@ class AIcrowdSubmission:
                  api_key=False,
                  auth_token=False,
                  challenge_id=False,
+                 debug_submission=False,
                  base_url="https://www.aicrowd.com/api"):
         self.score = score
         self.score_secondary = score_secondary
@@ -43,6 +44,7 @@ class AIcrowdSubmission:
         self.challenge_id = challenge_id
         self.round_id = False
         self.base_url = base_url
+        self.debug_submission = debug_submission
         self.raw_response = {}
 
     def _serialize(self, meta_overwrite=True):
@@ -62,6 +64,7 @@ class AIcrowdSubmission:
                 "Submission _serialize called without initialising participant api_key")
 
         _object["challenge_client_name"] = self.challenge_id
+        _object["debug_submission"] = self.debug_submission
         if self.round_id:
             _object["challenge_round_id"] = self.round_id
         _object["api_key"] = self.api_key
