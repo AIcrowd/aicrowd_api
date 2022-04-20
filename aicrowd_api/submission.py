@@ -46,6 +46,9 @@ class AIcrowdSubmission:
         self.base_url = base_url
         self.debug_submission = debug_submission
         self.raw_response = {}
+        self.is_team_submission = None
+        self.team_name = None
+        self.participant = None
 
     def _serialize(self, meta_overwrite=True):
         """Serializes a submission object into an API compatible JSON
@@ -169,6 +172,10 @@ The currrent API expects a token value for score secondary when score is set.")
         self.grading_status = _submission_object["grading_status_cd"]
         self.score = _submission_object["score"]
         self.score_secondary = _submission_object["score_secondary"]
+        self.message = _submission_object["grading_message"]
+        self.is_team_submission = _submission_object["is_team_submission"]
+        self.team_name = _submission_object["team_name"]
+        self.participant = _submission_object["participant_name"]
 
         if "description_markdown" in _submission_object.keys():
             self.long_description = _submission_object["description_markdown"]

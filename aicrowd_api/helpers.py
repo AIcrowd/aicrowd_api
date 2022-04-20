@@ -27,19 +27,12 @@ def make_api_call(auth_token, request_type, url, payload={}, debug=False):
     function["get"] = requests.get
     function["post"] = requests.post
     function["patch"] = requests.patch
+
+    r = function[request_type](
+        url,
+        params=payload,
+        headers=headers,
+        verify=True
+    )
+    return r
     
-    if request_type == "get":
-        return function[request_type](
-                   url,
-                   params=payload,
-                   headers=headers,
-                   verify=True
-               )
-    else:
-        headers['Content-Type'] = 'application/json'
-        return function[request_type](
-                   url,
-                   json=payload,
-                   headers=headers,
-                   verify=True
-               )
